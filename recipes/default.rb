@@ -91,10 +91,6 @@ end
 template conf_file = File.join(node[:kafka][:conf_dir], 'kafka.properties') do
   source 'kafka.properties.erb'
   mode 0644
-  notifies :restart, 'service[kafka]'
+  notifies :restart, 'runit_service[kafka]'
 end
 
-service 'kafka' do
-  action :nothing
-  subscribes :restart, resources("template[#{conf_file}]"), :immediately
-end
